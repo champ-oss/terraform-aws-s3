@@ -67,6 +67,7 @@ module "policy" {
   source           = "../../"
   git              = local.git
   name             = "test"
+  use_name_prefix  = false
   protect          = false # disabled just for testing
   policy           = data.aws_iam_policy_document.this.json
   enable_lb_policy = true
