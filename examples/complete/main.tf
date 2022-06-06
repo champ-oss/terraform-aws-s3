@@ -53,8 +53,8 @@ data "aws_iam_policy_document" "this" {
   statement {
     actions = ["s3:GetBucketAcl"]
     resources = [
-      "terraform-aws-s3-test",
-      "terraform-aws-s3-test/*"
+      "arn:aws:s3:::terraform-aws-s3-test",
+      "arn:aws:s3:::terraform-aws-s3-test/*"
     ]
     principals {
       type        = "Service"
