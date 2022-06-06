@@ -88,7 +88,7 @@ data "aws_iam_policy_document" "lb" {
     ]
     principals {
       type        = "AWS"
-      identifiers = [data.aws_elb_service_account.this.arn]
+      identifiers = [data.aws_elb_service_account.this[0].arn]
     }
   }
 
