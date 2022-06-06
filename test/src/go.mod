@@ -1,4 +1,4 @@
-module github.com/champ-oss/terraform-module-template
+module github.com/champ-oss/terraform-aws-s3
 
 go 1.17
 
