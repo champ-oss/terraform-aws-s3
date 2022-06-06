@@ -65,6 +65,7 @@ variable "expiration_lifecycle_days" {
 
 variable "expiration_lifecycle_prefix" {
   description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#prefix"
+  type        = string
   default     = "/"
 }
 
