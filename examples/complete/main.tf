@@ -72,3 +72,11 @@ module "policy" {
   policy           = data.aws_iam_policy_document.this.json
   enable_lb_policy = true
 }
+
+# Enable requester pays
+module "requester_pays" {
+  source                = "../../"
+  git                   = local.git
+  protect               = false # disabled just for testing
+  enable_requester_pays = true
+}
