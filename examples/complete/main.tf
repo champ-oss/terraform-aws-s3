@@ -74,7 +74,7 @@ module "policy" {
 }
 
 # Enable requester pays
-module "this" {
+module "requester_pays" {
   source                = "../../"
   git                   = local.git
   protect               = false # disabled just for testing
