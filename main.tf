@@ -122,3 +122,8 @@ data "aws_iam_policy_document" "lb" {
   }
 }
 
+resource "aws_s3_bucket_request_payment_configuration" "this" {
+  count  = var.enable_requester_pays ? 1 : 0
+  bucket = aws_s3_bucket.this.bucket
+  payer  = "Requester"
+}
