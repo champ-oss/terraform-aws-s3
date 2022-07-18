@@ -16,6 +16,9 @@ A Terraform module for creating an AWS S3 Bucket
 
 See the `examples/` folder
 
+<!-- BEGIN_TF_DOCS -->
+<!-- END_TF_DOCS -->
+
 ## Features
 
 
