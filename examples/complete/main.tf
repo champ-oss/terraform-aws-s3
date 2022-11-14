@@ -23,7 +23,7 @@ module "lb_logs" {
 
 # Use a customer KMS key
 module "kms_key" {
-  source                  = "github.com/champ-oss/terraform-aws-kms.git?ref=v1.0.29-459efe0"
+  source                  = "github.com/champ-oss/terraform-aws-kms.git?ref=v1.0.30-44f94bf"
   git                     = local.git
   name                    = "alias/${local.git}"
   deletion_window_in_days = 7
