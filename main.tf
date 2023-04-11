@@ -46,9 +46,12 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   }
 }
 
-resource "aws_s3_bucket_acl" "this" {
+resource "aws_s3_bucket_ownership_controls" "this" {
   bucket = aws_s3_bucket.this.id
-  acl    = var.acl
+
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
