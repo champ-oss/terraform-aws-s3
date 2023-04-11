@@ -27,10 +27,10 @@ variable "protect" {
   default     = true
 }
 
-variable "acl" {
-  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl#acl"
+variable "object_ownership" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_ownership_controls#object_ownership"
   type        = string
-  default     = "private"
+  default     = "BucketOwnerEnforced"
 }
 
 variable "kms_master_key_id" {
