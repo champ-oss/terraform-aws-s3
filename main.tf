@@ -9,8 +9,8 @@ locals {
 # tflint-ignore: terraform_comment_syntax
 //noinspection ConflictingProperties
 resource "aws_s3_bucket" "this" {
-  bucket        = var.use_name_prefix ? null : "${var.git}-${var.name}"
-  bucket_prefix = var.use_name_prefix ? "${var.git}-${var.name}-" : null
+  bucket        = var.use_name_prefix ? null : substr("${var.git}-${var.name}", 0, 63)  # 63 char limit
+  bucket_prefix = var.use_name_prefix ? substr("${var.git}-${var.name}-", 0, 37) : null # 37 char limit on prefix
   force_destroy = !var.protect
   tags          = merge(local.tags, var.tags)
 }
