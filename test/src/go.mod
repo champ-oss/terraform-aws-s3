@@ -2,7 +2,7 @@ module github.com/champ-oss/terraform-aws-s3
 
 go 1.17
 
-require github.com/gruntwork-io/terratest v0.43.8
+require github.com/gruntwork-io/terratest v0.43.11
 
 require (
 	cloud.google.com/go v0.105.0 // indirect
