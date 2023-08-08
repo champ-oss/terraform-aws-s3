@@ -3,7 +3,7 @@ resource "aws_s3_bucket_inventory" "this" {
   bucket = aws_s3_bucket.this.id
   name   = "inventory"
 
-  included_object_versions = "All"
+  included_object_versions = "Current"
 
   schedule {
     frequency = var.s3_inventory_frequency
