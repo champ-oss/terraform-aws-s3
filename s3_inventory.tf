@@ -4,7 +4,7 @@ resource "aws_s3_bucket_inventory" "this" {
   name   = "inventory"
 
   included_object_versions = "Current"
-
+  optional_fields          = var.optional_fields
   schedule {
     frequency = var.s3_inventory_frequency
   }
