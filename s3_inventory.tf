@@ -12,8 +12,7 @@ resource "aws_s3_bucket_inventory" "this" {
   destination {
     bucket {
       format     = "CSV"
-      bucket_arn = var.s3_inventory_destination_arn
-      account_id = var.account_id
+      bucket_arn = aws_s3_bucket.this.arn
       prefix     = "inventory"
     }
   }
