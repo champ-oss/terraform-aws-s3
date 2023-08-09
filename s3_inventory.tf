@@ -12,7 +12,7 @@ resource "aws_s3_bucket_inventory" "this" {
   destination {
     bucket {
       format     = "CSV"
-      bucket_arn = aws_s3_bucket.this.arn
+      bucket_arn = var.destination_bucket_arn != "" ? var.destination_bucket_arn : aws_s3_bucket.this.arn
       prefix     = "inventory"
       encryption {
         sse_s3 {

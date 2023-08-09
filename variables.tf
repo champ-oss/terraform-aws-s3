@@ -129,3 +129,9 @@ variable "optional_fields" {
   default     = ["Size", "EncryptionStatus", "LastModifiedDate", "ETag", "StorageClass"]
 }
 
+variable "destination_bucket_arn" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_inventory#bucket_arn"
+  type        = string
+  default     = ""
+}
+
