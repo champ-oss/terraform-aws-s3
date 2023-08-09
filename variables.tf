@@ -110,3 +110,28 @@ variable "enable_requester_pays" {
   type        = bool
   default     = false
 }
+
+variable "enable_s3_inventory" {
+  description = "enable or disable s3 inventory resource"
+  type        = bool
+  default     = false
+}
+
+variable "s3_inventory_frequency" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_inventory#frequency"
+  type        = string
+  default     = "Daily"
+}
+
+variable "optional_fields" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_inventory#optional_fields"
+  type        = list(any)
+  default     = ["Size", "EncryptionStatus", "LastModifiedDate", "ETag", "StorageClass"]
+}
+
+variable "destination_bucket_arn" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_inventory#bucket_arn"
+  type        = string
+  default     = ""
+}
+
