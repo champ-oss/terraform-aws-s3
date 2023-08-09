@@ -126,6 +126,6 @@ variable "s3_inventory_frequency" {
 variable "optional_fields" {
   description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_inventory#optional_fields"
   type        = list(any)
-  default     = ["EncryptionStatus"]
+  default     = ["Size", "EncryptionStatus", "LastModifiedDate", "ETag", "StorageClass"]
 }
 
