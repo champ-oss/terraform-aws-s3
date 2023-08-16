@@ -85,6 +85,7 @@ jobs:
           done
           if [ -f test.sh ]; then bash test.sh; fi
       - name: destroy
+        if: always()
         run: terraform destroy -auto-approve
   check-examples:
     needs: run-example
