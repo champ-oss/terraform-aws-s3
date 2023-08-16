@@ -25,11 +25,6 @@ env:
   NEW_RELIC_REGION: ${{ secrets.NEW_RELIC_REGION }}
   NEW_RELIC_ACCOUNT_ID: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
 
-defaults:
-  run:
-    shell: bash
-    working-directory: test/src
-
 jobs:
   list-examples:
     runs-on: ubuntu-latest
@@ -56,6 +51,10 @@ jobs:
       fail-fast: false
       matrix:
         EXAMPLES: ${{ fromJson(needs.list-examples.outputs.EXAMPLES) }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: examples/${{ matrix.EXAMPLES }}
     steps:
       - uses: actions/checkout@v3
       - uses: aws-actions/configure-aws-credentials@v2
@@ -69,22 +68,16 @@ jobs:
       - name: TF_VAR_git
         run: echo "TF_VAR_git=$(echo ${GITHUB_REPOSITORY} | sed -e 's|.*/||')" >> $GITHUB_ENV
       - name: init
-        working-directory: ${{ matrix.EXAMPLES }}
         run: terraform init
       - name: validate
-        working-directory: ${{ matrix.EXAMPLES }}
         run: terraform validate
       - name: plan
-        working-directory: ${{ matrix.EXAMPLES }}
         run: terraform plan -out=tfplan
       - name: apply
-        working-directory: ${{ matrix.EXAMPLES }}
         run: terraform apply -auto-approve tfplan
       - name: check
-        working-directory: ${{ matrix.EXAMPLES }}
         run: terraform plan -detailed-exitcode
       - name: destroy
-        working-directory: ${{ matrix.EXAMPLES }}
         run: terraform destroy -auto-approve
   check-examples:
     needs: run-example
