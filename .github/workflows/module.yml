@@ -75,6 +75,15 @@ jobs:
         run: terraform apply -auto-approve tfplan
       - name: check
         run: terraform plan -detailed-exitcode
+      - name: integration test
+        run: |
+          for row in $(echo $(terraform output -json) | jq -c '. | to_entries[]'); do
+            key=$(echo $row | jq -r '.key' | tr '[:lower:]' '[:upper:]')
+            value=$(echo $row | jq -r '.value.value' | tr -d '\n[]" ')
+            echo $key=$value
+            export $key=$value
+          done
+          if [ -f test.sh ]; then bash test.sh; fi
       - name: destroy
         run: terraform destroy -auto-approve
   check-examples:
