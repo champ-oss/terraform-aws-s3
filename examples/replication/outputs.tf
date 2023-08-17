@@ -1,7 +1,9 @@
 output "source_bucket" {
-  value = module.source.bucket
+  description = "Source Bucket"
+  value       = module.source.bucket
 }
 
 output "destination_bucket" {
-  value = module.destination.bucket
+  description = "Destination Bucket"
+  value       = module.destination.bucket
 }
