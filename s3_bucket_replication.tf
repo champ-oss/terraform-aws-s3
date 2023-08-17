@@ -73,6 +73,10 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
 
     destination {
       bucket = var.replication_destination_bucket_arn
+
+      metrics {
+        status = "Enabled"
+      }
     }
   }
 }
