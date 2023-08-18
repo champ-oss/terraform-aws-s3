@@ -129,9 +129,27 @@ variable "optional_fields" {
   default     = ["Size", "EncryptionStatus", "LastModifiedDate", "ETag", "StorageClass"]
 }
 
-variable "destination_bucket_arn" {
+variable "inventory_destination_bucket_arn" {
   description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_inventory#bucket_arn"
   type        = string
   default     = ""
+}
+
+variable "enable_replication" {
+  description = "Enable S3 replication to a specified bucket"
+  type        = bool
+  default     = false
+}
+
+variable "replication_destination_bucket_arn" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_replication_configuration#destination"
+  type        = string
+  default     = null
+}
+
+variable "replication_enable_delete_marker" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_replication_configuration#delete_marker_replication"
+  type        = bool
+  default     = false
 }
 
