@@ -63,16 +63,16 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
-  count  = var.policy != "" || var.enable_lb_policy ? 1 : 0
+  count  = var.enable_custom_policy || var.enable_lb_policy ? 1 : 0
   bucket = aws_s3_bucket.this.id
   policy = data.aws_iam_policy_document.combined[0].json
 }
 
 data "aws_iam_policy_document" "combined" {
-  count = var.policy != "" || var.enable_lb_policy ? 1 : 0
+  count = var.enable_custom_policy || var.enable_lb_policy ? 1 : 0
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
-    var.policy != "" ? var.policy : ""
+    var.enable_custom_policy ? var.policy : ""
   ])
 }
 
