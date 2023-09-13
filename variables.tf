@@ -99,6 +99,12 @@ variable "enable_lb_policy" {
   default     = false
 }
 
+variable "enable_custom_policy" {
+  description = "Enable custom bucket policy"
+  type        = bool
+  default     = false
+}
+
 variable "policy" {
   description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy#policy"
   type        = string
