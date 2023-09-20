@@ -159,3 +159,22 @@ variable "replication_enable_delete_marker" {
   default     = false
 }
 
+variable "enable_cors_configuration" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_cors_configuration"
+  type        = bool
+  default     = false
+}
+
+variable "cors_rules" {
+  description = "https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_cors_configuration#cors_rule"
+  type = list(object({
+    allowed_headers = optional(list(string))
+    allowed_methods = list(string)
+    allowed_origins = list(string)
+    expose_headers  = optional(list(string))
+    id              = optional(string)
+    max_age_seconds = optional(number)
+  }))
+  default = []
+}
+
