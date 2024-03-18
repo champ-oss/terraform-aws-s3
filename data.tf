@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "combined" {
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
-    var.aws_cross_account_id != null ?  data.aws_iam_policy_document.cross_account[0].json : ""
+    var.aws_cross_account_id != null ? data.aws_iam_policy_document.cross_account[0].json : ""
   ])
 }
 
@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "cross_account" {
   count = var.aws_cross_account_id != null ? 1 : 0
 
   statement {
-    actions   = ["s3:Get*"]
+    actions = ["s3:Get*"]
     resources = [
       aws_s3_bucket.this.arn,
       "${aws_s3_bucket.this.arn}/*"
