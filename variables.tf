@@ -183,10 +183,3 @@ variable "aws_cross_account_id_arns" {
   type        = list(string)
   default     = []
 }
-
-variable "enable_cross_account_policy" {
-  description = "enable cross account policy"
-  type        = bool
-  default     = false
-}
-
