@@ -178,3 +178,9 @@ variable "cors_rules" {
   default = []
 }
 
+variable "aws_cross_account_id" {
+  description = "cross account id for read only policy to s3"
+  type        = string
+  default     = null
+}
+
