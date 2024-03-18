@@ -1,9 +1,9 @@
 data "aws_iam_policy_document" "combined" {
-  count = var.enable_custom_policy || var.enable_lb_policy || var.aws_cross_account_id != null ? 1 : 0
+  count = var.enable_custom_policy || var.enable_lb_policy || var.aws_cross_account_id_arns != [] ? 1 : 0
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
-    var.aws_cross_account_id != null ? data.aws_iam_policy_document.cross_account[0].json : ""
+    var.aws_cross_account_id_arns != [] ? data.aws_iam_policy_document.cross_account[0].json : ""
   ])
 }
 
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "lb" {
 }
 
 data "aws_iam_policy_document" "cross_account" {
-  count = var.aws_cross_account_id != null ? 1 : 0
+  count = var.aws_cross_account_id_arns != [] ? 1 : 0
 
   statement {
     actions = ["s3:Get*"]
@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "cross_account" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.aws_cross_account_id}:root"]
+      identifiers = var.aws_cross_account_id_arns
     }
   }
 }
