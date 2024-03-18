@@ -60,7 +60,11 @@ data "aws_iam_policy_document" "cross_account" {
   count = length(var.aws_cross_account_id_arns) != 0 ? 1 : 0
 
   statement {
-    actions = ["s3:Get*"]
+    actions = [
+      "s3:DescribeJob",
+      "s3:Get*",
+      "s3:List*"
+    ]
     resources = [
       aws_s3_bucket.this.arn,
       "${aws_s3_bucket.this.arn}/*"
