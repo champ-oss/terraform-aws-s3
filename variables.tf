@@ -180,7 +180,13 @@ variable "cors_rules" {
 
 variable "aws_cross_account_id_arns" {
   description = "cross account id arns for read only policy to s3"
-  type        = list(any)
+  type        = list(string)
   default     = []
+}
+
+variable "enable_cross_account_policy" {
+  description = "enable cross account policy"
+  type        = bool
+  default     = false
 }
 
