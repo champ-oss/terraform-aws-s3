@@ -61,7 +61,6 @@ data "aws_iam_policy_document" "cross_account" {
 
   statement {
     actions = [
-      "s3:DescribeJob",
       "s3:Get*",
       "s3:List*"
     ]
