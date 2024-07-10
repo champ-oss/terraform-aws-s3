@@ -183,3 +183,9 @@ variable "aws_cross_account_id_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "enabled" {
+  description = "Set to false to prevent the module from creating any resources"
+  type        = bool
+  default     = true
+}
