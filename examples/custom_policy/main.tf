@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "this" {
   statement {
     actions = ["s3:GetBucketAcl"]
     resources = [
-      "arn:aws:s3:::${module.this.bucket}"
+      "arn:aws:s3:::${module.this.bucket}",
       "arn:aws:s3:::${module.this.bucket}/*"
     ]
     principals {
