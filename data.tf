@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "lb" {
   statement {
     actions = ["s3:PutObject"]
     resources = [
-      aws_s3_bucket.this.arn,
+      aws_s3_bucket.this[0].arn,
       "${aws_s3_bucket.this[0].arn}/*"
     ]
     principals {
@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "lb" {
   statement {
     actions = ["s3:PutObject"]
     resources = [
-      aws_s3_bucket.this.arn,
+      aws_s3_bucket.this[0].arn,
       "${aws_s3_bucket.this[0].arn}/*"
     ]
     principals {
