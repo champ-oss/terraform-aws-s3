@@ -1,6 +1,6 @@
 resource "aws_s3_bucket_inventory" "this" {
-  count  = var.enable_s3_inventory ? 1 : 0
-  bucket = aws_s3_bucket.this.id
+  count  = var.enable_s3_inventory && var.enabled ? 1 : 0
+  bucket = aws_s3_bucket.this[0].id
   name   = "inventory"
 
   included_object_versions = "Current"
@@ -12,7 +12,7 @@ resource "aws_s3_bucket_inventory" "this" {
   destination {
     bucket {
       format     = "CSV"
-      bucket_arn = var.inventory_destination_bucket_arn != "" ? var.inventory_destination_bucket_arn : aws_s3_bucket.this.arn
+      bucket_arn = var.inventory_destination_bucket_arn != "" ? var.inventory_destination_bucket_arn : aws_s3_bucket.this[0].arn
       prefix     = "inventory"
     }
   }

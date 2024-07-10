@@ -13,8 +13,8 @@ data "aws_iam_policy_document" "this" {
   statement {
     actions = ["s3:GetBucketAcl"]
     resources = [
-      "arn:aws:s3:::terraform-aws-s3-test",
-      "arn:aws:s3:::terraform-aws-s3-test/*"
+      "arn:aws:s3:::${module.this.bucket}",
+      "arn:aws:s3:::${module.this.bucket}/*"
     ]
     principals {
       type        = "Service"
@@ -27,7 +27,7 @@ module "this" {
   source               = "../../"
   git                  = "terraform-aws-s3"
   name                 = "test"
-  use_name_prefix      = false
+  use_name_prefix      = true
   protect              = false
   enable_custom_policy = true
   policy               = data.aws_iam_policy_document.this.json

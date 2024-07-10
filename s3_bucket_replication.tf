@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "replication_assume_role" {
-  count = var.enable_replication ? 1 : 0
+  count = var.enabled && var.enable_replication ? 1 : 0
   statement {
     principals {
       type        = "Service"
@@ -10,19 +10,19 @@ data "aws_iam_policy_document" "replication_assume_role" {
 }
 
 resource "aws_iam_role" "replication" {
-  count              = var.enable_replication ? 1 : 0
+  count              = var.enabled && var.enable_replication ? 1 : 0
   name_prefix        = substr("${var.git}-${var.name}-replication-", 0, 63)
   assume_role_policy = data.aws_iam_policy_document.replication_assume_role[0].json
 }
 
 data "aws_iam_policy_document" "replication" {
-  count = var.enable_replication ? 1 : 0
+  count = var.enabled && var.enable_replication ? 1 : 0
   statement {
     actions = [
       "s3:GetReplicationConfiguration",
       "s3:ListBucket",
     ]
-    resources = [aws_s3_bucket.this.arn]
+    resources = [aws_s3_bucket.this[0].arn]
   }
 
   statement {
@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "replication" {
       "s3:GetObjectVersionAcl",
       "s3:GetObjectVersionTagging",
     ]
-    resources = ["${aws_s3_bucket.this.arn}/*"]
+    resources = ["${aws_s3_bucket.this[0].arn}/*"]
   }
 
   statement {
@@ -45,22 +45,22 @@ data "aws_iam_policy_document" "replication" {
 }
 
 resource "aws_iam_policy" "replication" {
-  count       = var.enable_replication ? 1 : 0
+  count       = var.enabled && var.enable_replication ? 1 : 0
   name_prefix = substr("${var.git}-${var.name}-replication-", 0, 63)
   policy      = data.aws_iam_policy_document.replication[0].json
 }
 
 resource "aws_iam_role_policy_attachment" "replication" {
-  count      = var.enable_replication ? 1 : 0
+  count      = var.enabled && var.enable_replication ? 1 : 0
   role       = aws_iam_role.replication[0].name
   policy_arn = aws_iam_policy.replication[0].arn
 }
 
 resource "aws_s3_bucket_replication_configuration" "replication" {
-  count      = var.enable_replication ? 1 : 0
+  count      = var.enabled && var.enable_replication ? 1 : 0
   depends_on = [aws_s3_bucket_versioning.this]
   role       = aws_iam_role.replication[0].arn
-  bucket     = aws_s3_bucket.this.id
+  bucket     = aws_s3_bucket.this[0].id
 
   rule {
     status = "Enabled"
