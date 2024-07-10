@@ -8,6 +8,12 @@ terraform {
   }
 }
 
+variable "enabled" {
+  description = "module enabled"
+  type        = bool
+  default     = true
+}
+
 module "source" {
   source                             = "../../"
   git                                = "terraform-aws-s3"
@@ -15,6 +21,7 @@ module "source" {
   protect                            = false
   enable_replication                 = true
   replication_destination_bucket_arn = module.destination.arn
+  enabled                            = var.enabled
 }
 
 module "destination" {
@@ -22,4 +29,5 @@ module "destination" {
   git     = "terraform-aws-s3"
   name    = "destination"
   protect = false
+  enabled = var.enabled
 }
