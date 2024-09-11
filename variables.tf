@@ -189,3 +189,9 @@ variable "enabled" {
   type        = bool
   default     = true
 }
+
+variable "replication_destination_account_id" {
+  description = "Account ID of the destination bucket"
+  type        = string
+  default     = ""
+}

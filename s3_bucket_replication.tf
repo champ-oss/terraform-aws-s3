@@ -73,7 +73,10 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
 
     destination {
       bucket = var.replication_destination_bucket_arn
-
+      access_control_translation {
+        owner = "Destination"
+      }
+      account = var.replication_destination_account_id
       metrics {
         status = "Enabled"
       }
