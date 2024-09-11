@@ -22,6 +22,10 @@ module "source" {
   enable_replication                 = true
   replication_destination_bucket_arn = module.destination.arn
   enabled                            = var.enabled
+  replication_destination_account_id = data.aws_caller_identity.source.account_id
+}
+
+data "aws_caller_identity" "source" {
 }
 
 module "destination" {
