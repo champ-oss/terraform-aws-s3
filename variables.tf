@@ -195,3 +195,9 @@ variable "replication_destination_account_id" {
   type        = string
   default     = ""
 }
+
+variable "replication_enable_existing_objects" {
+  description = "Enable replication of existing objects"
+  type        = bool
+  default     = true
+}
