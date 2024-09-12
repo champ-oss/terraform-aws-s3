@@ -25,8 +25,7 @@ module "source" {
   replication_destination_account_id = data.aws_caller_identity.source.account_id
 }
 
-data "aws_caller_identity" "source" {
-}
+data "aws_caller_identity" "source" {}
 
 module "destination" {
   source  = "../../"
@@ -34,4 +33,26 @@ module "destination" {
   name    = "destination"
   protect = false
   enabled = var.enabled
+  enable_custom_policy = true
+  policy = data.aws_iam_policy_document.replication.json
+}
+
+data "aws_iam_policy_document" "replication" {
+  statement {
+    actions = [
+      "s3:ReplicateObject",
+      "s3:ReplicateDelete",
+      "s3:ObjectOwnerOverrideToBucketOwner",
+    ]
+    resources = [
+      "arn:aws:s3:::${module.destination.bucket}",
+      "arn:aws:s3:::${module.destination.bucket}/*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.source.account_id}:root"
+      ]
+    }
+  }
 }
