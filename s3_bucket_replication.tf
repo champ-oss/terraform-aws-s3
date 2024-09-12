@@ -66,7 +66,10 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
     status = "Enabled"
 
     filter {
-      prefix                   = "/"
+      and {
+        prefix                   = "/"
+      }
+
     }
 
     delete_marker_replication {
