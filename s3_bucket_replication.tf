@@ -65,7 +65,10 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
   rule {
     status = "Enabled"
 
-    filter {}
+    filter {
+      prefix                   = "/"
+      object_size_greater_than = 0
+    }
 
     delete_marker_replication {
       status = var.replication_enable_delete_marker ? "Enabled" : "Disabled"
