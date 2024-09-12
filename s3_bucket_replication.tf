@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "replication_assume_role" {
   statement {
     principals {
       type        = "Service"
-      identifiers = ["s3.amazonaws.com"]
+      identifiers = ["s3.amazonaws.com", "batchoperations.s3.amazonaws.com"]
     }
     actions = ["sts:AssumeRole"]
   }
@@ -64,20 +64,13 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
 
   rule {
     status = "Enabled"
-
     filter {
-      and {
         prefix                   = "/"
-      }
-
     }
-
     delete_marker_replication {
-      status = var.replication_enable_delete_marker ? "Enabled" : "Disabled"
+      status = "Disabled"
     }
-    existing_object_replication {
-      status = var.replication_enable_existing_objects ? "Enabled" : "Disabled"
-    }
+
     destination {
       bucket = var.replication_destination_bucket_arn
       access_control_translation {
