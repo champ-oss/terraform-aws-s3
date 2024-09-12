@@ -1,3 +1,5 @@
+# Description: This file contains the terraform code to create an S3 bucket with replication enabled.
+# note that replication doesn't work for existing objects in the bucket. It only works for new objects.
 data "aws_iam_policy_document" "replication_assume_role" {
   count = var.enabled && var.enable_replication ? 1 : 0
   statement {
