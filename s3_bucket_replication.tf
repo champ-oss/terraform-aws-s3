@@ -67,7 +67,6 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
 
     filter {
       prefix                   = "/"
-      object_size_greater_than = 0
     }
 
     delete_marker_replication {
