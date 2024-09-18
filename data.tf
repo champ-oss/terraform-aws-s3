@@ -103,5 +103,9 @@ data "aws_iam_policy_document" "data_sync" {
   statement {
     actions = ["datasync:*"]
     resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = var.datasync_role_arn
+    }
   }
 }
