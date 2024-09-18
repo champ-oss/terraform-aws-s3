@@ -101,12 +101,7 @@ data "aws_iam_policy_document" "data_sync" {
     }
   }
   statement {
-    principals {
-      identifiers = ["datasync.amazonaws.com"]
-      type = "Service"
-    }
-    actions = [
-      "sts:AssumeRole"
-    ]
+    actions = ["datasync:*"]
+    resources = ["*"]
   }
 }
