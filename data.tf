@@ -93,7 +93,9 @@ data "aws_iam_policy_document" "data_sync" {
     ]
     resources = [
       aws_s3_bucket.this[0].arn,
-      "${aws_s3_bucket.this[0].arn}/*"
+      "${aws_s3_bucket.this[0].arn}/*",
+      var.datasync_source_bucket_arn,
+      "${var.datasync_source_bucket_arn}/*"
     ]
     principals {
       type        = "AWS"

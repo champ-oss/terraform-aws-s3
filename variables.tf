@@ -195,3 +195,9 @@ variable "enabled" {
   type        = bool
   default     = true
 }
+
+variable "datasync_source_bucket_arn" {
+  description = "DataSync source bucket ARN"
+  type        = string
+  default     = ""
+}
