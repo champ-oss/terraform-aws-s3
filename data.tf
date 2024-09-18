@@ -101,11 +101,20 @@ data "aws_iam_policy_document" "data_sync" {
     }
   }
   statement {
-    actions = ["datasync:*"]
-    resources = ["*"]
+    actions = ["sts:AssumeRole"]
     principals {
-      type        = "AWS"
-      identifiers = var.datasync_role_arn
+      type        = "Service"
+      identifiers = ["datasync.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.source_account_id]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:datasync:${var.source_account_region}:${var.source_account_id}:*"]
     }
   }
 }

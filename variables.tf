@@ -201,3 +201,15 @@ variable "datasync_source_bucket_arn" {
   type        = string
   default     = ""
 }
+
+variable "source_account_region" {
+  description = "Source account region"
+  type        = string
+  default     = "us-east-2"
+}
+
+variable "source_account_id" {
+  description = "Source account id"
+  type        = string
+  default     = ""
+}
