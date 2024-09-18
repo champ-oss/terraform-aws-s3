@@ -100,4 +100,14 @@ data "aws_iam_policy_document" "data_sync" {
       identifiers = var.datasync_role_arn
     }
   }
+
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["datasync.amazonaws.com"]
+    }
+  }
 }
