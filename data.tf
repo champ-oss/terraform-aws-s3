@@ -3,8 +3,8 @@ data "aws_iam_policy_document" "combined" {
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
+    var.enable_datasync_policy_source_bucket ? data.aws_iam_policy_document.data_sync[0].json : "",
     length(var.aws_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account[0].json : "",
-    length(var.datasync_role_arn) != 0 ? data.aws_iam_policy_document.data_sync[0].json : "",
   ])
 }
 
@@ -77,19 +77,15 @@ data "aws_iam_policy_document" "cross_account" {
 }
 
 data "aws_iam_policy_document" "data_sync" {
-  count = length(var.datasync_role_arn) != 0 && var.enabled ? 1 : 0
+  count = var.enable_datasync_policy_source_bucket && var.enabled ? 1 : 0
   statement {
     actions = [
-      "s3:GetBucketLocation",
-      "s3:ListBucket",
-      "s3:ListBucketMultipartUploads",
+      "s3:Get*",
+      "s3:List*",
       "s3:AbortMultipartUpload",
       "s3:DeleteObject",
-      "s3:GetObject",
-      "s3:ListMultipartUploadParts",
+      "s3:PutObjectTagging",
       "s3:PutObject",
-      "s3:GetObjectTagging",
-      "s3:PutObjectTagging"
     ]
     resources = [
       aws_s3_bucket.this[0].arn,
@@ -97,7 +93,7 @@ data "aws_iam_policy_document" "data_sync" {
     ]
     principals {
       type        = "AWS"
-      identifiers = var.datasync_role_arn
+      identifiers = ["arn:aws:iam::${var.datasync_cross_account_id}:root"]
     }
   }
 }
