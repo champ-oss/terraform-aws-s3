@@ -69,7 +69,7 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
-  count  = (var.enable_custom_policy || var.enable_lb_policy || length(var.datasync_role_arn) != 0 || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0
+  count  = (var.enable_custom_policy || var.enable_lb_policy || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
   policy = data.aws_iam_policy_document.combined[0].json
 }

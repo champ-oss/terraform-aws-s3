@@ -184,12 +184,6 @@ variable "aws_cross_account_id_arns" {
   default     = []
 }
 
-variable "datasync_role_arn" {
-  description = "DataSync role ARN"
-  type        = list(string)
-  default     = []
-}
-
 variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
   type        = bool
