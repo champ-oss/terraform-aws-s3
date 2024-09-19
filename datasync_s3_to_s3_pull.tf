@@ -13,7 +13,6 @@ resource "aws_datasync_task" "this" { # datasync task running on destination buc
   destination_location_arn = aws_datasync_location_s3.destination[0].arn
 
   schedule {
-    # Every hour on the hour
     schedule_expression = var.datasync_schedule_expression
   }
   tags = merge(local.tags, var.tags)
@@ -58,9 +57,7 @@ data "aws_iam_policy_document" "datasync" {
 resource "aws_iam_role_policy" "datasync" {
   count = var.enable_datasync && var.enabled ? 1 : 0
   role  = aws_iam_role.datasync[0].id
-
   policy = data.aws_iam_policy_document.data_sync_destination[0].json
-
 }
 
 data "aws_iam_policy_document" "data_sync_destination" {
