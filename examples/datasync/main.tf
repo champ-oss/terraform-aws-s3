@@ -17,23 +17,25 @@ variable "enabled" {
 }
 
 module "source" {
-  source                             = "../../"
-  git                                = "terraform-aws-s3"
-  name                               = "datasync-source"
-  protect                            = false
+  source                               = "../../"
+  git                                  = "terraform-aws-s3"
+  name                                 = "datasync-source"
+  protect                              = false
   enable_datasync_policy_source_bucket = true
-  replication_destination_bucket_arn = module.destination.arn
-  datasync_cross_account_id          = "123456789" # Datasync role arn for source bucket account
+  replication_destination_bucket_arn   = module.destination.arn
+  datasync_cross_account_id            = "123456789" # Datasync role arn for source bucket account
 }
 
 module "destination" {
-  source  = "../../"
-  git     = "terraform-aws-s3"
-  name    = "datasync-destination"
-  protect = false
-  enabled = var.enabled
+  source                     = "../../"
+  git                        = "terraform-aws-s3"
+  name                       = "datasync-destination"
+  protect                    = false
+  enabled                    = var.enabled
   enable_datasync            = true
   datasync_source_bucket_arn = module.source.arn
-  datasync_schedule_expression = "cron(0 * * * ? *)" # Every hour on the hour
+  # update cron to run every 1 minutes
+  datasync_schedule_expression = "cron(0/1 * * * ? *)"
 }
+
 */
