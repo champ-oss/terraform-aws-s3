@@ -33,7 +33,7 @@ module "destination" {
   protect                    = false
   enabled                    = var.enabled
   enable_datasync            = true
-  datasync_source_bucket_arn = module.source.arn
+  datasync_source_bucket_arn = "arn:"
   # update cron to run every 1 minutes
   datasync_schedule_expression = "cron(0/1 * * * ? *)"
 }

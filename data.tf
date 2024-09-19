@@ -82,10 +82,7 @@ data "aws_iam_policy_document" "data_sync" {
     actions = [
       "s3:Get*",
       "s3:List*",
-      "s3:AbortMultipartUpload",
-      "s3:DeleteObject",
-      "s3:PutObjectTagging",
-      "s3:PutObject",
+      "s3:AbortMultipartUpload"
     ]
     resources = [
       aws_s3_bucket.this[0].arn,
