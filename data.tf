@@ -83,19 +83,7 @@ data "aws_iam_policy_document" "data_sync" {
     actions = [
       "s3:GetBucketLocation",
       "s3:ListBucket",
-      "s3:ListBucketMultipartUploads"
-    ]
-    resources = [
-      aws_s3_bucket.this[0].arn
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = var.datasync_role_arn
-    }
-  }
-
-  statement {
-    actions = [
+      "s3:ListBucketMultipartUploads",
       "s3:AbortMultipartUpload",
       "s3:DeleteObject",
       "s3:GetObject",
@@ -105,7 +93,8 @@ data "aws_iam_policy_document" "data_sync" {
       "s3:PutObject"
     ]
     resources = [
-      "${aws_s3_bucket.this[0].arn}/*",
+      aws_s3_bucket.this[0].arn,
+      "${aws_s3_bucket.this[0].arn}/*"
     ]
     principals {
       type        = "AWS"
