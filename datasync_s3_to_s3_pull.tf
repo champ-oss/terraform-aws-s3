@@ -40,56 +40,65 @@ resource "aws_iam_role" "datasync" {
   count       = var.enable_datasync && var.enabled ? 1 : 0
   name_prefix = substr("${var.git}-${var.name}-datasync-", 0, 63)
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "datasync.amazonaws.com"
-        }
-      },
-    ]
-  })
-  tags = merge(local.tags, var.tags)
+  assume_role_policy = data.aws_iam_policy_document.datasync[0].json
+  tags               = merge(local.tags, var.tags)
+}
+
+data "aws_iam_policy_document" "datasync" {
+  count = var.enable_datasync && var.enabled ? 1 : 0
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      identifiers = ["datasync.amazonaws.com"]
+      type        = "Service"
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "datasync" {
   count = var.enable_datasync && var.enabled ? 1 : 0
   role  = aws_iam_role.datasync[0].id
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "s3:GetBucketLocation",
-          "s3:ListBucket",
-          "s3:ListBucketMultipartUploads",
-          "s3:AbortMultipartUpload",
-          "s3:DeleteObject",
-          "s3:GetObject",
-          "s3:GetObjectTagging",
-          "s3:GetObjectVersion",
-          "s3:GetObjectVersionTagging",
-          "s3:ListMultipartUploadParts",
-          "s3:PutObject",
-          "s3:PutObjectTagging"
-        ],
-        Effect = "Allow",
-        Resource = [
-          # destination bucket
-          aws_s3_bucket.this[0].arn,
-          "${aws_s3_bucket.this[0].arn}/*"
-          # source bucket
-          # var.datasync_source_bucket_arn,
-          # "${var.datasync_source_bucket_arn}/*"
-        ]
-      }
-    ]
-  })
+  policy = data.aws_iam_policy_document.data_sync_destination[0].json
+
 }
+
+data "aws_iam_policy_document" "data_sync_destination" {
+  count = var.enable_datasync && var.enabled ? 1 : 0
+  statement {
+    actions = [
+      "s3:Get*",
+      "s3:List*",
+      "s3:AbortMultipartUpload"
+    ]
+    resources = [
+      var.datasync_source_bucket_arn,
+      "${var.datasync_source_bucket_arn}/*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:AbortMultipartUpload",
+      "s3:DeleteObject",
+      "s3:GetObject",
+      "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
+      "s3:GetObjectVersionTagging",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObject",
+      "s3:PutObjectTagging"
+    ]
+    resources = [
+      aws_s3_bucket.this[0].arn,
+      "${aws_s3_bucket.this[0].arn}/*"
+    ]
+  }
+}
+
 
 resource "aws_datasync_location_s3" "destination" { # pull from source to destination
   count         = var.enable_datasync && var.enabled ? 1 : 0

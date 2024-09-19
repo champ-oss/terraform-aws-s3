@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "combined" {
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
-    var.enable_datasync_policy_source_bucket ? data.aws_iam_policy_document.data_sync[0].json : "",
+    var.enable_datasync_policy_source_bucket ? data.aws_iam_policy_document.data_sync_source[0].json : "",
     length(var.aws_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account[0].json : "",
   ])
 }
@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "cross_account" {
   }
 }
 
-data "aws_iam_policy_document" "data_sync" {
+data "aws_iam_policy_document" "data_sync_source" {
   count = var.enable_datasync_policy_source_bucket && var.enabled ? 1 : 0
   statement {
     actions = [
