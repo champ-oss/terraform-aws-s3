@@ -78,43 +78,38 @@ data "aws_iam_policy_document" "cross_account" {
 
 data "aws_iam_policy_document" "data_sync" {
   count = length(var.datasync_role_arn) != 0 && var.enabled ? 1 : 0
+
   statement {
     actions = [
       "s3:GetBucketLocation",
       "s3:ListBucket",
-      "s3:ListBucketMultipartUploads",
-      "s3:AbortMultipartUpload",
-      "s3:DeleteObject",
-      "s3:GetObject",
-      "s3:ListMultipartUploadParts",
-      "s3:PutObject",
-      "s3:GetObjectTagging",
-      "s3:PutObjectTagging"
+      "s3:ListBucketMultipartUploads"
     ]
     resources = [
-      aws_s3_bucket.this[0].arn,
-      "${aws_s3_bucket.this[0].arn}/*",
+      aws_s3_bucket.this[0].arn
     ]
     principals {
       type        = "AWS"
       identifiers = var.datasync_role_arn
     }
   }
+
   statement {
-    actions = ["sts:AssumeRole"]
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:DeleteObject",
+      "s3:GetObject",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObjectTagging",
+      "s3:GetObjectTagging",
+      "s3:PutObject"
+    ]
+    resources = [
+      "${aws_s3_bucket.this[0].arn}/*",
+    ]
     principals {
-      type        = "Service"
-      identifiers = ["datasync.amazonaws.com"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [var.source_account_id]
-    }
-    condition {
-      test     = "StringLike"
-      variable = "aws:SourceArn"
-      values   = ["arn:aws:datasync:${var.source_account_region}:${var.source_account_id}:*"]
+      type        = "AWS"
+      identifiers = var.datasync_role_arn
     }
   }
 }
