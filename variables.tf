@@ -184,16 +184,10 @@ variable "aws_cross_account_id_arns" {
   default     = []
 }
 
-variable "datasync_cross_account_id" {
+variable "datasync_cross_account_id_arn" {
   description = "DataSync role ARN"
-  type        = string
-  default     = ""
-}
-
-variable "enable_datasync_policy_source_bucket" {
-  description = "Enable DataSync policy"
-  type        = bool
-  default     = false
+  type        = list(string)
+  default     = []
 }
 
 variable "enabled" {

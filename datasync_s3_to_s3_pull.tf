@@ -55,8 +55,8 @@ data "aws_iam_policy_document" "datasync" {
 }
 
 resource "aws_iam_role_policy" "datasync" {
-  count = var.enable_datasync && var.enabled ? 1 : 0
-  role  = aws_iam_role.datasync[0].id
+  count  = var.enable_datasync && var.enabled ? 1 : 0
+  role   = aws_iam_role.datasync[0].id
   policy = data.aws_iam_policy_document.data_sync_destination[0].json
 }
 
