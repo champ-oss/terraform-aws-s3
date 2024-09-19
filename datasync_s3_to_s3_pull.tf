@@ -81,10 +81,10 @@ resource "aws_iam_role_policy" "datasync" {
         Resource = [
           # destination bucket
           aws_s3_bucket.this[0].arn,
-          "${aws_s3_bucket.this[0].arn}/*",
+          "${aws_s3_bucket.this[0].arn}/*"
           # source bucket
-          var.datasync_source_bucket_arn,
-          "${var.datasync_source_bucket_arn}/*"
+          # var.datasync_source_bucket_arn,
+          # "${var.datasync_source_bucket_arn}/*"
         ]
       }
     ]
