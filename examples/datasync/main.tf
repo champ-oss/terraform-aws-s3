@@ -20,9 +20,8 @@ module "source" {
   git                                  = "terraform-aws-s3"
   name                                 = "datasync-source"
   protect                              = false
-  enable_datasync_policy_source_bucket = true
   replication_destination_bucket_arn   = module.destination.arn
-  datasync_cross_account_id            = "123456789" # Datasync role arn for source bucket account
+  datasync_cross_account_id            = ["arn:aws:iam::123456789:root"] # Datasync role arn for source bucket account
 }
 
 module "destination" {
