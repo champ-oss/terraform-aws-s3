@@ -213,3 +213,15 @@ variable "datasync_source_bucket_arn" {
   type        = string
   default     = ""
 }
+
+variable "enable_lifecycle_configuration" {
+  description = "Enable S3 lifecycle configuration"
+  type        = bool
+  default     = true
+}
+
+variable "enable_ownership_controls" {
+  description = "Enable S3 bucket ownership controls"
+  type        = bool
+  default     = true
+}
