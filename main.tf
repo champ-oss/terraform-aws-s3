@@ -4,17 +4,19 @@ locals {
     cost    = "shared"
     creator = "terraform"
   }
+  bucket_prefix_name = var.name != "" ? substr("${var.git}-${var.name}-", 0, 37) : substr("${var.git}-", 0, 37)
 }
 
 # tflint-ignore: terraform_comment_syntax
 //noinspection ConflictingProperties
 resource "aws_s3_bucket" "this" {
   count         = var.enabled ? 1 : 0
-  bucket        = var.use_name_prefix ? null : substr("${var.git}-${var.name}", 0, 63)  # 63 char limit
-  bucket_prefix = var.use_name_prefix ? substr("${var.git}-${var.name}-", 0, 37) : null # 37 char limit on prefix
+  bucket        = var.use_name_prefix ? null : substr("${var.git}-${var.name}", 0, 63) # 63 char limit
+  bucket_prefix = var.use_name_prefix ? local.bucket_prefix_name : null                       # 37 char limit on prefix
   force_destroy = !var.protect
   tags          = merge(local.tags, var.tags)
 }
+
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   count  = var.enabled ? 1 : 0
