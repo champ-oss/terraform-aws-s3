@@ -14,7 +14,7 @@ resource "aws_iam_role" "replication" {
   name_prefix        = substr("${var.git}-${var.name}-replication-", 0, 63)
   assume_role_policy = data.aws_iam_policy_document.replication_assume_role[0].json
   lifecycle {
-    ignore_changes = [name-prefix]
+    ignore_changes = [name_prefix]
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_iam_policy" "replication" {
   name_prefix = substr("${var.git}-${var.name}-replication-", 0, 63)
   policy      = data.aws_iam_policy_document.replication[0].json
   lifecycle {
-    ignore_changes = [name-prefix]
+    ignore_changes = [name_prefix]
   }
 }
 
