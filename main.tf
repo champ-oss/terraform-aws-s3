@@ -12,7 +12,7 @@ locals {
 resource "aws_s3_bucket" "this" {
   count         = var.enabled ? 1 : 0
   bucket        = var.use_name_prefix ? null : substr("${var.git}-${var.name}", 0, 63) # 63 char limit
-  bucket_prefix = var.use_name_prefix ? local.bucket_prefix_name : null                       # 37 char limit on prefix
+  bucket_prefix = var.use_name_prefix ? local.bucket_prefix_name : null                # 37 char limit on prefix
   force_destroy = !var.protect
   tags          = merge(local.tags, var.tags)
 }
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_versioning" "this" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
-  count  = var.enabled ? 1 : 0
+  count  = var.enabled && var.enable_lifecycle_configuration ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
   rule {
     id     = "expiration"
@@ -53,7 +53,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "this" {
-  count  = var.enabled ? 1 : 0
+  count  = var.enabled && var.enable_ownership_controls ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
 
   rule {
