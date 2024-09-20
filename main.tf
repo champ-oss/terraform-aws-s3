@@ -4,7 +4,7 @@ locals {
     cost    = "shared"
     creator = "terraform"
   }
-  bucket_prefix_name = var.name ? substr("${var.git}-${var.name}-", 0, 37) : substr("${var.git}-", 0, 37)
+  bucket_prefix_name = var.name != "" ? substr("${var.git}-${var.name}-", 0, 37) : substr("${var.git}-", 0, 37)
 }
 
 # tflint-ignore: terraform_comment_syntax
