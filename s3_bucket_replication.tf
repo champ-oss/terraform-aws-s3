@@ -13,9 +13,6 @@ resource "aws_iam_role" "replication" {
   count              = var.enabled && var.enable_replication ? 1 : 0
   name_prefix        = substr("${var.git}-${var.name}-replication-", 0, 63)
   assume_role_policy = data.aws_iam_policy_document.replication_assume_role[0].json
-  lifecycle {
-    ignore_changes = [name_prefix]
-  }
 }
 
 data "aws_iam_policy_document" "replication" {
@@ -51,9 +48,6 @@ resource "aws_iam_policy" "replication" {
   count       = var.enabled && var.enable_replication ? 1 : 0
   name_prefix = substr("${var.git}-${var.name}-replication-", 0, 63)
   policy      = data.aws_iam_policy_document.replication[0].json
-  lifecycle {
-    ignore_changes = [name_prefix]
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "replication" {
