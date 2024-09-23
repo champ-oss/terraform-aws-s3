@@ -8,7 +8,7 @@ resource "random_string" "datasync" {
 
 resource "aws_datasync_task" "this" { # datasync task running on destination bucket account
   count                    = var.enable_datasync && var.enabled ? 1 : 0
-  name                     = "${var.git}-${random_string.datasync[0].result}"
+  name                     = trimsuffix(substr("${var.git}-${random_string.datasync[0].result}", 0, 38), "-") # 38 char limit
   source_location_arn      = aws_datasync_location_s3.source[0].arn
   destination_location_arn = aws_datasync_location_s3.destination[0].arn
 
