@@ -37,7 +37,7 @@ resource "aws_datasync_location_s3" "source" {
 
 resource "aws_iam_role" "datasync" {
   count       = var.enable_datasync && var.enabled ? 1 : 0
-  name_prefix = substr("${var.git}-${var.name}-datasync-", 0, 38) # 38 char limit
+  name_prefix = substr("${var.git}-${var.name}-datasync-", 0, 38) # 38 character limit
 
   assume_role_policy = data.aws_iam_policy_document.datasync[0].json
   tags               = merge(local.tags, var.tags)
