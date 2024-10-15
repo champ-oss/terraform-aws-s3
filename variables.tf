@@ -190,6 +190,12 @@ variable "datasync_cross_account_id_arn" {
   default     = []
 }
 
+variable "s3_update_cross_account_id_arns" {
+  description = "DataSync role ARN"
+  type        = list(string)
+  default     = []
+}
+
 variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
   type        = bool
