@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "combined" {
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
-    length(var.s3_update_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account_s3_update[0].json : "",
+    length(var.s3_read_write_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account_s3_update[0].json : "",
     length(var.datasync_cross_account_id_arn) != 0 ? data.aws_iam_policy_document.data_sync_source[0].json : "",
     length(var.aws_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account[0].json : ""
   ])
@@ -78,7 +78,7 @@ data "aws_iam_policy_document" "cross_account" {
 }
 
 data "aws_iam_policy_document" "cross_account_s3_update" {
-  count = length(var.s3_update_cross_account_id_arns) != 0 && var.enabled ? 1 : 0
+  count = length(var.s3_read_write_cross_account_id_arns) != 0 && var.enabled ? 1 : 0
 
   statement {
     actions = [
@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "cross_account_s3_update" {
     ]
     principals {
       type        = "AWS"
-      identifiers = var.s3_update_cross_account_id_arns
+      identifiers = var.s3_read_write_cross_account_id_arns
     }
   }
 }

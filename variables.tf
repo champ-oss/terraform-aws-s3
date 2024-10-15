@@ -190,7 +190,7 @@ variable "datasync_cross_account_id_arn" {
   default     = []
 }
 
-variable "s3_update_cross_account_id_arns" {
+variable "s3_read_write_cross_account_id_arns" {
   description = "cross account id arns for read/write policy to s3"
   type        = list(string)
   default     = []
