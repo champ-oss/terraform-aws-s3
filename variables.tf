@@ -190,6 +190,12 @@ variable "datasync_cross_account_id_arn" {
   default     = []
 }
 
+variable "s3_read_write_cross_account_id_arns" {
+  description = "cross account id arns for read and write policy to s3"
+  type        = list(string)
+  default     = []
+}
+
 variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
   type        = bool

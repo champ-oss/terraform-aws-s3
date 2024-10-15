@@ -3,8 +3,9 @@ data "aws_iam_policy_document" "combined" {
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
+    length(var.s3_read_write_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account_s3_update[0].json : "",
     length(var.datasync_cross_account_id_arn) != 0 ? data.aws_iam_policy_document.data_sync_source[0].json : "",
-    length(var.aws_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account[0].json : "",
+    length(var.aws_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account[0].json : ""
   ])
 }
 
@@ -72,6 +73,26 @@ data "aws_iam_policy_document" "cross_account" {
     principals {
       type        = "AWS"
       identifiers = var.aws_cross_account_id_arns
+    }
+  }
+}
+
+data "aws_iam_policy_document" "cross_account_s3_update" {
+  count = length(var.s3_read_write_cross_account_id_arns) != 0 && var.enabled ? 1 : 0
+
+  statement {
+    actions = [
+      "s3:Get*",
+      "s3:List*",
+      "s3:PutObject"
+    ]
+    resources = [
+      aws_s3_bucket.this[0].arn,
+      "${aws_s3_bucket.this[0].arn}/*"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = var.s3_read_write_cross_account_id_arns
     }
   }
 }
