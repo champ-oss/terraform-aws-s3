@@ -191,7 +191,7 @@ variable "datasync_cross_account_id_arn" {
 }
 
 variable "s3_update_cross_account_id_arns" {
-  description = "DataSync role ARN"
+  description = "cross account id arns for read/write policy to s3"
   type        = list(string)
   default     = []
 }
