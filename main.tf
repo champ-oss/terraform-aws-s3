@@ -12,7 +12,7 @@ locals {
 resource "aws_s3_bucket" "this" {
   count         = var.enabled ? 1 : 0
   bucket        = var.use_name_prefix ? null : substr("${var.git}-${var.name}", 0, 63) # 63 char limit
-  bucket_prefix = var.use_name_prefix ? local.bucket_prefix_name : null                       # 37 char limit on prefix
+  bucket_prefix = var.use_name_prefix ? local.bucket_prefix_name : null                # 37 char limit on prefix
   force_destroy = !var.protect
   tags          = merge(local.tags, var.tags)
 }
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_versioning" "this" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
-  count  = var.enabled ? 1 : 0
+  count  = var.enabled && var.enable_lifecycle_configuration ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
   rule {
     id     = "expiration"
@@ -53,7 +53,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "this" {
-  count  = var.enabled ? 1 : 0
+  count  = var.enabled && var.enable_ownership_controls ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
 
   rule {
@@ -71,7 +71,7 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
-  count  = (var.enable_custom_policy || var.enable_lb_policy || length(var.datasync_cross_account_id_arn) != 0 || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0
+  count  = (var.enable_custom_policy || var.enable_lb_policy || length(var.s3_read_write_cross_account_id_arns) != 0 || length(var.datasync_cross_account_id_arn) != 0 || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
   policy = data.aws_iam_policy_document.combined[0].json
 }

@@ -8,7 +8,7 @@ resource "random_string" "datasync" {
 
 resource "aws_datasync_task" "this" { # datasync task running on destination bucket account
   count                    = var.enable_datasync && var.enabled ? 1 : 0
-  name                     = "${var.git}-${random_string.datasync[0].result}"
+  name                     = trimsuffix(substr("${var.git}-${random_string.datasync[0].result}", 0, 38), "-") # 38 char limit
   source_location_arn      = aws_datasync_location_s3.source[0].arn
   destination_location_arn = aws_datasync_location_s3.destination[0].arn
 
@@ -37,7 +37,7 @@ resource "aws_datasync_location_s3" "source" {
 
 resource "aws_iam_role" "datasync" {
   count       = var.enable_datasync && var.enabled ? 1 : 0
-  name_prefix = substr("${var.git}-${var.name}-datasync-", 0, 63)
+  name_prefix = substr("${var.git}-${var.name}-datasync-", 0, 38) # 38 character limit
 
   assume_role_policy = data.aws_iam_policy_document.datasync[0].json
   tags               = merge(local.tags, var.tags)
