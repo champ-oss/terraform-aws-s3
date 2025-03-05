@@ -3,7 +3,7 @@ module "backup" {
   enabled                  = var.enabled && var.enable_backup
   git                      = var.git
   name                     = var.name
-  resource_arn             = aws_s3_bucket.this[0].arn
+  resource_arn             = try(aws_s3_bucket.this[0].arn, null)
   protect                  = var.protect
   delete_after             = var.backup_delete_after
   enable_continuous_backup = var.enable_continuous_backup
