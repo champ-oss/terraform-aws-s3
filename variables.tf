@@ -184,8 +184,50 @@ variable "aws_cross_account_id_arns" {
   default     = []
 }
 
+variable "datasync_cross_account_id_arn" {
+  description = "DataSync role ARN"
+  type        = list(string)
+  default     = []
+}
+
+variable "s3_read_write_cross_account_id_arns" {
+  description = "cross account id arns for read write policy to s3"
+  type        = list(string)
+  default     = []
+}
+
 variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
+  type        = bool
+  default     = true
+}
+
+variable "enable_datasync" {
+  description = "Enable DataSync"
+  type        = bool
+  default     = false
+}
+
+variable "datasync_schedule_expression" {
+  description = "DataSync schedule expression"
+  type        = string
+  default     = "cron(40 * * * ? *)" # Every hour on the hour
+}
+
+variable "datasync_source_bucket_arn" {
+  description = "DataSync source bucket ARN"
+  type        = string
+  default     = ""
+}
+
+variable "enable_lifecycle_configuration" {
+  description = "Enable S3 lifecycle configuration"
+  type        = bool
+  default     = true
+}
+
+variable "enable_ownership_controls" {
+  description = "Enable S3 bucket ownership controls"
   type        = bool
   default     = true
 }
