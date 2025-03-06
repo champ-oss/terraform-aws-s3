@@ -231,3 +231,27 @@ variable "enable_ownership_controls" {
   type        = bool
   default     = true
 }
+
+variable "enable_backup" {
+  description = "Enable AWS Backup"
+  type        = bool
+  default     = false
+}
+
+variable "enable_continuous_backup" {
+  description = "Enable continuous backup of the S3 bucket"
+  type        = bool
+  default     = null
+}
+
+variable "backup_delete_after" {
+  description = "Specifies the number of days after creation that backups are deleted"
+  type        = number
+  default     = 30
+}
+
+variable "backup_schedule" {
+  description = "Specifies the schedule for creating backups"
+  type        = string
+  default     = "cron(0 6 * * ? *)"
+}
