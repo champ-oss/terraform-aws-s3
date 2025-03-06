@@ -9,10 +9,9 @@ terraform {
 }
 
 module "this" {
-  source                   = "../../"
-  git                      = "terraform-aws-s3"
-  protect                  = false
-  enable_backup            = true
-  backup_delete_after      = 30
-  enable_continuous_backup = true
+  source              = "../../"
+  git                 = "terraform-aws-s3"
+  protect             = false
+  enable_backup       = true
+  backup_delete_after = 30
 }

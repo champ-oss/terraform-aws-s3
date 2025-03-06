@@ -1,5 +1,5 @@
 module "backup" {
-  source                   = "github.com/champ-oss/terraform-aws-backup.git?ref=v1.0.1-2b2928f"
+  source                   = "github.com/champ-oss/terraform-aws-backup.git?ref=develop"
   enabled                  = var.enabled && var.enable_backup
   git                      = var.git
   name                     = var.name
