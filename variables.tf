@@ -247,11 +247,11 @@ variable "enable_continuous_backup" {
 variable "backup_delete_after" {
   description = "Specifies the number of days after creation that backups are deleted"
   type        = number
-  default     = null
+  default     = 30
 }
 
 variable "backup_schedule" {
   description = "Specifies the schedule for creating backups"
   type        = string
-  default     = null
+  default     = "cron(0 6 * * ? *)"
 }
