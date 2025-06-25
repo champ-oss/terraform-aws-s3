@@ -5,7 +5,7 @@ variable "git" {
 
 variable "name" {
   type        = string
-  description = "Name used to identify the bucket"
+  description = "Name used to identify bucket"
   default     = "s3"
 }
 
