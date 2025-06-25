@@ -223,7 +223,7 @@ variable "datasync_source_bucket_arn" {
 variable "enable_lifecycle_configuration" {
   description = "Enable S3 lifecycle configuration"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_ownership_controls" {
