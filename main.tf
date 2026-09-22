@@ -15,6 +15,10 @@ resource "aws_s3_bucket" "this" {
   bucket_prefix = var.use_name_prefix ? local.bucket_prefix_name : null                # 37 char limit on prefix
   force_destroy = !var.protect
   tags          = merge(local.tags, var.tags)
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 
@@ -29,6 +33,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
       sse_algorithm     = var.sse_algorithm
     }
   }
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_s3_bucket_versioning" "this" {
@@ -36,6 +44,10 @@ resource "aws_s3_bucket_versioning" "this" {
   bucket = aws_s3_bucket.this[0].id
   versioning_configuration {
     status = var.versioning ? "Enabled" : "Disabled"
+  }
+
+  lifecycle {
+    ignore_changes = [region]
   }
 }
 
@@ -52,6 +64,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
       days = var.expiration_lifecycle_days
     }
   }
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_s3_bucket_ownership_controls" "this" {
@@ -60,6 +76,10 @@ resource "aws_s3_bucket_ownership_controls" "this" {
 
   rule {
     object_ownership = var.object_ownership
+  }
+
+  lifecycle {
+    ignore_changes = [region]
   }
 }
 
@@ -70,18 +90,30 @@ resource "aws_s3_bucket_public_access_block" "this" {
   block_public_policy     = var.block_public_policy
   restrict_public_buckets = var.restrict_public_buckets
   ignore_public_acls      = var.ignore_public_acls
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_s3_bucket_policy" "this" {
   count  = (var.enable_custom_policy || var.enable_lb_policy || length(var.s3_read_write_cross_account_id_arns) != 0 || length(var.datasync_cross_account_id_arn) != 0 || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0
   bucket = aws_s3_bucket.this[0].id
   policy = data.aws_iam_policy_document.combined[0].json
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_s3_bucket_request_payment_configuration" "this" {
   count  = var.enabled && var.enable_requester_pays ? 1 : 0
   bucket = aws_s3_bucket.this[0].bucket
   payer  = "Requester"
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_s3_bucket_cors_configuration" "example" {
@@ -99,5 +131,9 @@ resource "aws_s3_bucket_cors_configuration" "example" {
       expose_headers  = cors_rule.value.expose_headers
       max_age_seconds = cors_rule.value.max_age_seconds
     }
+  }
+
+  lifecycle {
+    ignore_changes = [region]
   }
 }

@@ -16,4 +16,8 @@ resource "aws_s3_bucket_inventory" "this" {
       prefix     = "inventory"
     }
   }
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }

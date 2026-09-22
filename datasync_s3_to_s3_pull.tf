@@ -22,6 +22,10 @@ resource "aws_datasync_task" "this" { # datasync task running on destination buc
     gid               = "NONE"
     uid               = "NONE"
   }
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_datasync_location_s3" "source" {
@@ -33,6 +37,10 @@ resource "aws_datasync_location_s3" "source" {
     bucket_access_role_arn = aws_iam_role.datasync[0].arn
   }
   tags = merge(local.tags, var.tags)
+
+  lifecycle {
+    ignore_changes = [region]
+  }
 }
 
 resource "aws_iam_role" "datasync" {
@@ -104,5 +112,9 @@ resource "aws_datasync_location_s3" "destination" { # pull from source to destin
   tags          = merge(local.tags, var.tags)
   s3_config {
     bucket_access_role_arn = aws_iam_role.datasync[0].arn
+  }
+
+  lifecycle {
+    ignore_changes = [region]
   }
 }
