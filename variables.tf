@@ -255,3 +255,25 @@ variable "backup_schedule" {
   type        = string
   default     = "cron(0 6 * * ? *)"
 }
+
+variable "enable_gd_s3_malware_protection" {
+  description = "Enable GuardDuty S3 malware protection"
+  type        = bool
+  default     = false
+}
+
+variable "gd_tag_exempt_principal_arns" {
+  description = <<-EOT
+    IAM role ARNs allowed to change tags on objects that GuardDuty has already scanned.
+    WARNING: these principals can strip the GuardDutyMalwareScanStatus tag and make
+    an infected object readable. Leave empty unless you accept that risk.
+  EOT
+  type    = list(string)
+  default = []
+}
+
+variable "create_gd_log_resource_policy" {
+  description = "Create the shared CloudWatch Logs resource policy for GuardDuty scan-result log groups. Set to true in exactly ONE module instance per account/region (quota: 10 policies per account/region)."
+  type        = bool
+  default     = false
+}
