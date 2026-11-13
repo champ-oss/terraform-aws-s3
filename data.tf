@@ -10,10 +10,6 @@ data "aws_iam_policy_document" "combined" {
   ])
 }
 
-locals {
-  guardduty_malware_rule_arn = "arn:aws:events:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
-}
-
 data "aws_elb_service_account" "this" {
   count = var.enable_lb_policy && var.enabled ? 1 : 0
 }
@@ -121,7 +117,6 @@ data "aws_iam_policy_document" "data_sync_source" {
   }
 }
 
-##
 data "aws_iam_policy_document" "gd_S3_malware_protection" {
   count = length(var.gd_malware_protection_account_id_arns) != 0 && var.enabled ? 1 : 0
   statement {
@@ -135,22 +130,24 @@ data "aws_iam_policy_document" "gd_S3_malware_protection" {
     actions   = ["s3:GetObject", "s3:GetObjectVersion"]
     resources = [aws_s3_bucket.this[0].arn]
     condition {
+      # Tag is present
       test     = "Null"
       variable = "s3:ExistingObjectTag/GuardDutyMalwareScanStatus"
       values   = ["false"]
     }
     condition {
+      # ...and its value is not clean
       test     = "StringNotEquals"
       variable = "s3:ExistingObjectTag/GuardDutyMalwareScanStatus"
       values   = ["NO_THREATS_FOUND"]
     }
     condition {
+      # Scanner can still read objects
       test     = "ArnNotEquals"
       variable = "aws:PrincipalArn"
-      values   = [local.guardduty_malware_rule_arn]
+      values   = [aws_iam_role.guardduty_malware_protection_role[0].arn]
     }
   }
-
   statement {
     # Only GuardDuty may set, change, or remove object tags. Applies only to objects, not buckets.
     sid       = "DenyTagTampering"
@@ -169,7 +166,7 @@ data "aws_iam_policy_document" "gd_S3_malware_protection" {
     condition {
       test     = "ArnNotEquals"
       variable = "aws:PrincipalArn"
-      values   = [local.guardduty_malware_rule_arn]
+      values   = [aws_iam_role.guardduty_malware_protection_role[0].arn]
     }
   }
 }
