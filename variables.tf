@@ -255,3 +255,14 @@ variable "backup_schedule" {
   type        = string
   default     = "cron(0 6 * * ? *)"
 }
+
+variable "enable_gd_s3_malware_protection" {
+  type    = bool
+  default = false
+}
+
+variable "enable_malware_protection_policy" {
+  description = "GuardDuty Malware Protection policy"
+  type        = bool
+  default     = false
+}
