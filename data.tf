@@ -1,12 +1,12 @@
 data "aws_iam_policy_document" "combined" {
-  count = (length(var.datasync_cross_account_id_arn) != 0 || length(var.s3_read_write_cross_account_id_arns) != 0 || var.enable_custom_policy || var.enable_lb_policy || var.enable_malware_protection_policy || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0 
+  count = (length(var.datasync_cross_account_id_arn) != 0 || length(var.s3_read_write_cross_account_id_arns) != 0 || var.enable_custom_policy || var.enable_lb_policy || var.enable_gd_s3_malware_protection || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0 
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
     length(var.s3_read_write_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account_s3_update[0].json : "",
     length(var.datasync_cross_account_id_arn) != 0 ? data.aws_iam_policy_document.data_sync_source[0].json : "",
     length(var.aws_cross_account_id_arns) != 0 ? data.aws_iam_policy_document.cross_account[0].json : "",
-    var.enable_malware_protection_policy ? data.aws_iam_policy_document.gd_S3_malware_protection[0].json : ""
+    var.enable_gd_s3_malware_protection ? data.aws_iam_policy_document.gd_S3_malware_protection[0].json : ""
   ])
 }
 
@@ -118,7 +118,7 @@ data "aws_iam_policy_document" "data_sync_source" {
 }
 
 data "aws_iam_policy_document" "gd_S3_malware_protection" {
-  count = var.enable_malware_protection_policy && var.enabled ? 1 : 0
+  count = var.enable_gd_s3_malware_protection && var.enabled ? 1 : 0
   statement {
     # Tag based access control for GuardDuty Malware Protection enabled
     sid       = "DenyReadIfScannedNotClean"
