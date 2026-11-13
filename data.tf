@@ -162,7 +162,7 @@ data "aws_iam_policy_document" "gd_S3_malware_protection" {
       "s3:DeleteObjectTagging",
       "s3:DeleteObjectVersionTagging",
     ]
-    resources = ["arn:aws:s3:::${each.value}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.this[0].id}/*"]
     condition {
       test     = "ArnNotEquals"
       variable = "aws:PrincipalArn"
