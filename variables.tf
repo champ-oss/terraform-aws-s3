@@ -268,8 +268,8 @@ variable "gd_tag_exempt_principal_arns" {
     WARNING: these principals can strip the GuardDutyMalwareScanStatus tag and make
     an infected object readable. Leave empty unless you accept that risk.
   EOT
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "create_gd_log_resource_policy" {

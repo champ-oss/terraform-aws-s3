@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "combined" {
-  count = (length(var.datasync_cross_account_id_arn) != 0 || length(var.s3_read_write_cross_account_id_arns) != 0 || var.enable_custom_policy || var.enable_lb_policy || var.enable_gd_s3_malware_protection || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0 
+  count = (length(var.datasync_cross_account_id_arn) != 0 || length(var.s3_read_write_cross_account_id_arns) != 0 || var.enable_custom_policy || var.enable_lb_policy || var.enable_gd_s3_malware_protection || length(var.aws_cross_account_id_arns) != 0) && var.enabled ? 1 : 0
   source_policy_documents = compact([
     var.enable_lb_policy ? data.aws_iam_policy_document.lb[0].json : "",
     var.enable_custom_policy ? var.policy : "",
@@ -125,8 +125,8 @@ data "aws_iam_policy_document" "gd_s3_malware_protection" {
   count = var.enable_gd_s3_malware_protection && var.enabled ? 1 : 0
   statement {
     # Tag based access control for GuardDuty Malware Protection enabled
-    sid       = "DenyReadIfScannedNotClean"
-    effect    = "Deny"
+    sid    = "DenyReadIfScannedNotClean"
+    effect = "Deny"
     principals {
       type        = "AWS"
       identifiers = ["*"]
@@ -150,13 +150,13 @@ data "aws_iam_policy_document" "gd_s3_malware_protection" {
       test     = "ArnNotEquals"
       variable = "aws:PrincipalArn"
       #values   = [aws_iam_role.guardduty_malware_protection_role[0].arn]
-      values   = [local.gd_role_arn] 
+      values = [local.gd_role_arn]
     }
   }
   statement {
     # Only GuardDuty may set, change, or remove object tags. Applies only to objects, not buckets.
-    sid       = "DenyTagTampering"
-    effect    = "Deny"
+    sid    = "DenyTagTampering"
+    effect = "Deny"
     principals {
       type        = "AWS"
       identifiers = ["*"]
@@ -164,7 +164,7 @@ data "aws_iam_policy_document" "gd_s3_malware_protection" {
     actions = [
       "s3:PutObject",
       "s3:PutObjectTagging",
-      "s3:PutObjectVersionTagging", 
+      "s3:PutObjectVersionTagging",
     ]
     resources = ["arn:aws:s3:::${aws_s3_bucket.this[0].id}/*"]
     condition {
