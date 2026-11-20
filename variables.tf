@@ -257,7 +257,7 @@ variable "backup_schedule" {
 }
 
 variable "enable_gd_s3_malware_protection" {
-  description = "Enable GuardDuty S3 malware protection"
+  description = "Enable GuardDuty Malware Protection for this bucket (per bucket). New uploads are scanned and tagged; objects with a non-clean result are blocked from reads."
   type        = bool
   default     = false
 }
@@ -273,7 +273,7 @@ variable "gd_tag_exempt_principal_arns" {
 }
 
 variable "create_gd_log_resource_policy" {
-  description = "Create the shared CloudWatch Logs resource policy for GuardDuty scan-result log groups. Set to true in exactly ONE module instance per account/region (quota: 10 policies per account/region)."
+  description = "Create the shared CloudWatch Logs resource policy for GuardDuty scan-result log groups. Set to true in exactly ONE module instance per account/region (quota: 10 policies per account/region). DO NOT set this true per bucket"
   type        = bool
   default     = false
 }
